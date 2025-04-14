@@ -1,0 +1,26 @@
+[
+  {
+    "day": 1,
+    "time": "08:00 AM",
+    "subject": "Math",
+    "group": "Group A"
+  },
+  {
+    "day": 1,
+    "time": "10:00 AM",
+    "subject": "Physics",
+    "group": "Group B"
+  },
+  {
+    "day": 2,
+    "time": "09:00 AM",
+    "subject": "Chemistry",
+    "group": "Group A"
+  },
+  {
+    "day": 2,
+    "time": "11:00 AM",
+    "subject": "Biology",
+    "group": "Group C"
+  }
+]
