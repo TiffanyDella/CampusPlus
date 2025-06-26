@@ -1,76 +1,86 @@
-import 'package:campus_plus/Settings/Settings.dart';
-import 'package:campus_plus/home/home.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'export/export.dart';
 
-import 'package:campus_plus/schedule/schedule.dart';
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await initializeDateFormatting('ru_RU', null);
+  runApp(
+    
+    ChangeNotifierProvider(
+      create: (_) => SelectedTeacherProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  int _selectedPageIndex = 0;
+  final PageController _pageController = PageController();
 
-  var _selectedPageIndex = 0;
-  final _pageController = PageController(); // Initialize the PageController here
+  static final List<Widget> _pages = [
+    Home(),
+    Schedule(),
+    Settings(),
+  ];
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    if (_selectedPageIndex != index) {
+      setState(() {
+        _selectedPageIndex = index;
+      });
+    }
+  }
+
+  void _onNavBarTap(int index) {
+    if (_selectedPageIndex != index) {
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.ease,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return MaterialApp(
+    debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.blue,
         hintColor: Colors.grey,
       ),
       home: Scaffold(
         body: PageView(
-          onPageChanged: (value) {
-            setState(() {
-              _selectedPageIndex = value;
-            });
-          },
-          controller: _pageController,  // Use the PageController initialized in the state
-          children: [
-            Home(),
-            Schedule(),
-            Settings(),
+          controller: _pageController,
+          onPageChanged: _onPageChanged,
+          children: _pages,
+          physics: const BouncingScrollPhysics(),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: _onNavBarTap,
+          currentIndex: _selectedPageIndex,
+          selectedItemColor: theme.primaryColor,
+          unselectedItemColor: theme.hintColor,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Главная"),
+            BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "Расписание"),
+            BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Настройки"),
           ],
         ),
-        bottomNavigationBar: Builder(
-          builder: (context) {
-            final theme = Theme.of(context);  // Get the theme via BuildContext
-
-            return BottomNavigationBar(
-              onTap: _openPage,
-              currentIndex: _selectedPageIndex,
-              selectedItemColor: theme.primaryColor,  // Use theme for the selected color
-              unselectedItemColor: theme.hintColor,  // Use theme for the unselected color
-
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: "Главная"),
-                BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "Расписание"),
-                BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Настройки"),
-              ],
-            );
-          },
-        ),
       ),
-    );
-  }
-
-  void _openPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
-    _pageController.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),  // Set a reasonable duration for the animation
-      curve: Curves.ease,  // You can also change the curve if you like
     );
   }
 }

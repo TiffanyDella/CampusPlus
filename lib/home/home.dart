@@ -1,13 +1,21 @@
 import 'package:campus_plus/export/export.dart';
+import 'package:campus_plus/home/ScheduleToday.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
 
+  // Add the week number calculation method
+  int _calculateWeekNumber(DateTime date) {
+    final start = DateTime(2023, 9, 4); // Fixed start date of academic year
+    final days = date.difference(start).inDays;
+    return (days ~/ 7) % 2 + 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colors = theme.colorScheme;
-    final textTheme = theme.textTheme;
+    final currentDate = DateTime.now();
+    final currentWeekNumber = _calculateWeekNumber(currentDate);
 
     return Scaffold(
       appBar: AppBar(
@@ -16,33 +24,20 @@ class Home extends StatelessWidget {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return SingleChildScrollView(
+          return ListView(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Расписание в контейнере
-                _ScheduleContainer(
-                  maxHeight: constraints.maxHeight * 0.6,
-                  child: const Scheduletoday(),
-                ),
-                const SizedBox(height: 20),
-                // Дополнительная информация
-                Text(
-                  "Дополнительная информация",
-                  style: textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+            children: [
+              _ScheduleContainer(
+                maxHeight: 400,
+                child: RepaintBoundary(
+                  child: Scheduletoday(
+                    selectedDate: currentDate,
+                    weekNumber: currentWeekNumber,
                   ),
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  "Здесь можно добавить дополнительную информацию.",
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: colors.onSurface.withOpacity(0.6),
-                  ),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+            ],
           );
         },
       ),
@@ -66,7 +61,7 @@ class _ScheduleContainer extends StatelessWidget {
     return Container(
       constraints: BoxConstraints(maxHeight: maxHeight),
       decoration: BoxDecoration(
-        color: theme.cardColor,
+        color: Colors.grey,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -78,22 +73,18 @@ class _ScheduleContainer extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
+          const Padding(
+            padding: EdgeInsets.all(12),
             child: Text(
               "Расписание на сегодня",
-              style: theme.textTheme.titleMedium?.copyWith(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
             ),
           ),
           const Divider(height: 1),
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: child,
-            ),
-          ),
+          Expanded(child: child),
         ],
       ),
     );
