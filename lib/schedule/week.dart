@@ -1,4 +1,4 @@
-import 'package:campus_plus/export/export.dart';
+import 'package:flutter/material.dart';
 
 class Week extends StatelessWidget {
   final List<WeekDay> days;

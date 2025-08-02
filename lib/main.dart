@@ -1,10 +1,16 @@
+import 'package:campus_plus/Settings/Settings.dart';
+import 'package:campus_plus/home/home.dart';
+import 'package:campus_plus/schedule/schedule.dart';
+import 'package:campus_plus/selected_teacher_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'export/export.dart';
+import 'package:provider/provider.dart';
+
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ru_RU', null);
   runApp(
-    
     ChangeNotifierProvider(
       create: (_) => SelectedTeacherProvider(),
       child: const MyApp(),

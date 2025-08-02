@@ -1,27 +1,31 @@
-import 'package:campus_plus/export/export.dart';
-import 'package:campus_plus/home/ScheduleToday.dart';
+
+import 'package:campus_plus/schedule/scheduleMaker.dart';
+import 'package:campus_plus/schedule/week_swiper.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+export 'package:campus_plus/schedule/scheduleWidget.dart';
 
 
 class Schedule extends StatefulWidget {
   const Schedule({super.key});
-  
+
   @override
   State<Schedule> createState() => _ScheduleState();
 }
 
 class _ScheduleState extends State<Schedule> {
   final ValueNotifier<DateTime?> _selectedDateNotifier = ValueNotifier<DateTime?>(DateTime.now());
-  final ValueNotifier<int> _weekNumberNotifier = ValueNotifier<int>(1); 
+  final ValueNotifier<int> _weekNumberNotifier = ValueNotifier<int>(1);
 
   @override
   void initState() {
     super.initState();
-    // Инициализируем номер недели
+    
     _weekNumberNotifier.value = _calculateWeekNumber(DateTime.now());
   }
 
   int _calculateWeekNumber(DateTime date) {
-    final start = DateTime(2023, 9, 4); 
+    final start = DateTime(2023, 9, 4);
     final days = date.difference(start).inDays;
     return (days ~/ 7) % 2 + 1;
   }
@@ -47,7 +51,7 @@ class _ScheduleState extends State<Schedule> {
               _selectedDateNotifier.value = date;
             },
             onWeekChanged: (weekNumber) {
-              _weekNumberNotifier.value = weekNumber; 
+              _weekNumberNotifier.value = weekNumber;
             },
             initialDate: _selectedDateNotifier.value,
           ),
@@ -57,9 +61,9 @@ class _ScheduleState extends State<Schedule> {
               valueListenable1: _selectedDateNotifier,
               valueListenable2: _weekNumberNotifier,
               builder: (context, selectedDate, weekNumber, child) {
-                return Scheduletoday(
+                return ScheduleMaker(
                   selectedDate: selectedDate,
-                  weekNumber: weekNumber, 
+                  weekNumber: weekNumber,
                 );
               },
             ),
@@ -75,7 +79,7 @@ class ValueListenableBuilder2<T1, T2> extends StatelessWidget {
   final ValueListenable<T1> valueListenable1;
   final ValueListenable<T2> valueListenable2;
   final Widget Function(BuildContext context, T1 value1, T2 value2, Widget? child) builder;
-  
+
   const ValueListenableBuilder2({
     super.key,
     required this.valueListenable1,

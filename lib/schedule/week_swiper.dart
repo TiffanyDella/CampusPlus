@@ -1,4 +1,5 @@
-import 'package:campus_plus/export/export.dart';
+import 'package:campus_plus/schedule/week.dart';
+import 'package:flutter/material.dart';
 
 class WeekSwiper extends StatefulWidget {
   final ValueChanged<DateTime> onDaySelected;
@@ -116,7 +117,6 @@ Widget build(BuildContext context) {
             final weekStart = _weekStarts[weekIndex];
             final weekNumber = _calculateWeekNumber(weekStart);
             final daysInWeek = List.generate(6, (i) => i);
-            
             return Week(
               weekNumber: weekNumber, // ADD THIS LINE
               days: daysInWeek.map((i) {

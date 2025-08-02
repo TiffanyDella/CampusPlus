@@ -1,63 +1,63 @@
-import 'package:campus_plus/export/export.dart';
-
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectedTeacherProvider extends ChangeNotifier {
-  static const String _prefsKey = '_selectedTeacher';
-
   String? _teacher;
-  bool _isLoading = false;
+  bool _isLoading = true;
   String? _error;
 
   String? get teacher => _teacher;
   bool get isLoading => _isLoading;
   String? get error => _error;
-  bool get hasTeacher => _teacher?.isNotEmpty == true;
 
-  
-  Future<void> init() async {
-    await _runWithLoading(_loadFromPrefs);
+ 
+  bool get hasTeacher => _teacher != null && _teacher!.isNotEmpty;
+
+  SelectedTeacherProvider() {
+    _loadTeacher();
   }
 
-  
+  Future<void> _loadTeacher() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      _teacher = prefs.getString('selected_teacher');
+      _error = null;
+    } catch (e) {
+      _error = 'Ошибка загрузки преподавателя';
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
+
   Future<void> setTeacher(String teacher) async {
-    await _runWithLoading(() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
       _teacher = teacher;
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_prefsKey, teacher);
+      await prefs.setString('selected_teacher', teacher);
       _error = null;
-    });
+    } catch (e) {
+      _error = 'Ошибка сохранения преподавателя';
+    }
+    _isLoading = false;
+    notifyListeners();
   }
-
 
   Future<void> clearTeacher() async {
-    await _runWithLoading(() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
       _teacher = null;
       final prefs = await SharedPreferences.getInstance();
-      await prefs.remove(_prefsKey);
+      await prefs.remove('selected_teacher');
       _error = null;
-    });
-  }
-
-   Future<void> _loadFromPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    _teacher = prefs.getString(_prefsKey);
-    _error = null;
-  }
-
-  
-  Future<void> _runWithLoading(Future<void> Function() action) async {
-    _setLoading(true);
-    try {
-      await action();
-    } catch (e, stack) {
-      _error = 'Ошибка: ${e.toString()}';
-      
+    } catch (e) {
+      _error = 'Ошибка сброса преподавателя';
     }
-    _setLoading(false);
-  }
-
-  void _setLoading(bool value) {
-    _isLoading = value;
+    _isLoading = false;
     notifyListeners();
   }
 }

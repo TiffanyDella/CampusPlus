@@ -1,12 +1,12 @@
-import 'package:campus_plus/export/export.dart';
-import 'package:campus_plus/home/ScheduleToday.dart';
+import 'package:campus_plus/schedule/scheduleMaker.dart';
+import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
 
   // Add the week number calculation method
   int _calculateWeekNumber(DateTime date) {
-    final start = DateTime(2023, 9, 4); // Fixed start date of academic year
+    final start = DateTime(2023, 9, 4);
     final days = date.difference(start).inDays;
     return (days ~/ 7) % 2 + 1;
   }
@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
               _ScheduleContainer(
                 maxHeight: 400,
                 child: RepaintBoundary(
-                  child: Scheduletoday(
+                  child: ScheduleMaker(
                     selectedDate: currentDate,
                     weekNumber: currentWeekNumber,
                   ),

@@ -1,5 +1,9 @@
 
-import 'package:campus_plus/export/export.dart';
+import 'package:campus_plus/Settings/about.dart';
+import 'package:campus_plus/Settings/searchTeacher.dart';
+import 'package:campus_plus/selected_teacher_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -47,7 +51,6 @@ class _OtherSettingsSection extends StatelessWidget {
           icon: Icons.color_lens,
           title: "Тема приложения",
           onTap: () {
-          
           },
         ),
         _SettingItem(
