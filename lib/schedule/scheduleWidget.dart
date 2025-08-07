@@ -2,10 +2,22 @@ import 'package:flutter/material.dart';
 
 class ScheduleWidget extends StatelessWidget {
   final Map<String, dynamic> item;
+
   const ScheduleWidget({
     super.key,
     required this.item,
   });
+
+  String get _time => (item['time'] ?? '').toString();
+  String get _timeRange => (item['timeRange'] ?? '').toString();
+  String get _subject => (item['subject'] ?? '').toString();
+  String get _group => (item['group'] ?? '').toString();
+  String get _room => (item['room'] ?? '').toString();
+  String get _type => (item['type'] ?? '').toString();
+
+  bool get _hasGroup => _group.isNotEmpty;
+  bool get _hasRoom => _room.isNotEmpty;
+  bool get _hasType => _type.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -20,80 +32,63 @@ class ScheduleWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  item['time'],
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (item['timeRange'].isNotEmpty)
-                  Text(
-                    item['timeRange'],
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-              ],
-            ),
+            _buildTimeRow(),
             const SizedBox(height: 8),
-            Text(
-              item['subject'],
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
+            _buildSubject(context),
             const SizedBox(height: 8),
-            if (item['group'].isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Row(
-                  children: [
-                    const Icon(Icons.people_outline, size: 16),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Группа: ${item['group']}',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-            if (item['room'].isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Row(
-                  children: [
-                    const Icon(Icons.room_outlined, size: 16),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Аудитория: ${item['room']}',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-            Row(
-              children: [
-                const Icon(Icons.info_outline, size: 16),
-                const SizedBox(width: 8),
-                Text(
-                  item['type'],
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
+            if (_hasGroup) _buildInfoRow(Icons.people_outline, 'Группа: $_group'),
+            if (_hasRoom) _buildInfoRow(Icons.room_outlined, 'Аудитория: $_room'),
+            if (_hasType) _buildInfoRow(Icons.info_outline, _type, italic: true, grey: true),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTimeRow() {
+    final timeText = _timeRange.isNotEmpty ? '$_time - $_timeRange' : _time;
+    return Text(
+      timeText,
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  /// Название предмета.
+  Widget _buildSubject(BuildContext context) {
+    return Text(
+      _subject,
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).primaryColor,
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(
+    IconData icon,
+    String text, {
+    bool italic = false,
+    bool grey = false,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: grey ? Colors.grey[600] : null),
+          const SizedBox(width: 8),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 14,
+              fontStyle: italic ? FontStyle.italic : FontStyle.normal,
+              color: grey ? Colors.grey[600] : null,
+            ),
+          ),
+        ],
       ),
     );
   }

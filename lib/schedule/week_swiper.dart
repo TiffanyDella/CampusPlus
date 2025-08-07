@@ -116,9 +116,9 @@ Widget build(BuildContext context) {
           itemBuilder: (context, weekIndex) {
             final weekStart = _weekStarts[weekIndex];
             final weekNumber = _calculateWeekNumber(weekStart);
-            final daysInWeek = List.generate(6, (i) => i);
+            final daysInWeek = List.generate(7, (i) => i);
             return Week(
-              weekNumber: weekNumber, // ADD THIS LINE
+              weekNumber: weekNumber,
               days: daysInWeek.map((i) {
                 final date = weekStart.add(Duration(days: i));
                 return WeekDay(

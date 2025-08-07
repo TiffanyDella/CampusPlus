@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Home extends StatelessWidget {
   const Home({super.key});
 
-  // Add the week number calculation method
+
   int _calculateWeekNumber(DateTime date) {
     final start = DateTime(2023, 9, 4);
     final days = date.difference(start).inDays;
@@ -28,7 +28,7 @@ class Home extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             children: [
               _ScheduleContainer(
-                maxHeight: 400,
+                maxHeight: 500,
                 child: RepaintBoundary(
                   child: ScheduleMaker(
                     selectedDate: currentDate,

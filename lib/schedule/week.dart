@@ -67,7 +67,7 @@ class _WeekDayTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color selectedColor = Theme.of(context).primaryColor;
-    final Color unselectedBorder = Colors.grey[300]!;
+    final Color unselectedBorder = Colors.blue;
     final Color unselectedText = Colors.black;
     final Color selectedText = Colors.white;
     final Color unselectedSubText = Colors.grey[600]!;
@@ -78,7 +78,7 @@ class _WeekDayTile extends StatelessWidget {
         width: 40,
         padding: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
           color: isSelected ? selectedColor : Colors.transparent,
           border: Border.all(
             color: isSelected ? selectedColor : unselectedBorder,

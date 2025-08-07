@@ -1,5 +1,4 @@
 
-import 'package:campus_plus/Settings/about.dart';
 import 'package:campus_plus/Settings/searchTeacher.dart';
 import 'package:campus_plus/selected_teacher_provider.dart';
 import 'package:flutter/material.dart';
@@ -51,15 +50,6 @@ class _OtherSettingsSection extends StatelessWidget {
           icon: Icons.color_lens,
           title: "Тема приложения",
           onTap: () {
-          },
-        ),
-        _SettingItem(
-          icon: Icons.smartphone_outlined,
-          title: "О приложении",
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const About()),
-            );
           },
         ),
       ],
