@@ -1,3 +1,4 @@
+import 'package:campus_plus/themes.dart';
 import 'package:flutter/material.dart';
 
 class Week extends StatelessWidget {
@@ -28,7 +29,7 @@ class Week extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
+            color: lightTheme.primaryColor,
           ),
         ),
         const SizedBox(height: 8),
@@ -66,8 +67,8 @@ class _WeekDayTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color selectedColor = Theme.of(context).primaryColor;
-    final Color unselectedBorder = Colors.blue;
+    final Color selectedColor = lightTheme.primaryColor;
+    final Color unselectedBorder = lightTheme.primaryColor;
     final Color unselectedText = Colors.black;
     final Color selectedText = Colors.white;
     final Color unselectedSubText = Colors.grey[600]!;

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
 import 'package:flutter/foundation.dart' show compute;
 
-/// Виджет поиска преподавателей НГУЭУ
+
 class TeacherSearchWidget extends StatefulWidget {
   const TeacherSearchWidget({super.key});
 

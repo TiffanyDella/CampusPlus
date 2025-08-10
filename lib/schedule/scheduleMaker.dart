@@ -1,18 +1,14 @@
 import 'dart:convert';
-
-import 'package:campus_plus/Settings/searchTeacher.dart';
 import 'package:campus_plus/schedule/ScheduleWidget.dart';
 import 'package:campus_plus/schedule/scheduleParse.dart';
 import 'package:campus_plus/selected_teacher_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// ScheduleMaker отображает расписание выбранного преподавателя на выбранную дату и неделю.
 class ScheduleMaker extends StatefulWidget {
   final DateTime? selectedDate;
   final int weekNumber;
@@ -71,10 +67,9 @@ class _ScheduleMakerState extends State<ScheduleMaker> {
     }
   }
 
-  /// Проверка, выбран ли преподаватель
+
   bool _isTeacherSelected(String? teacher) => teacher != null && teacher.isNotEmpty;
 
-  /// Кеширование расписания в SharedPreferences
   Future<void> _saveScheduleToPrefs(String teacher, List<Map<String, dynamic>> schedule) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('schedule_cache_$teacher', jsonEncode(schedule));
@@ -91,7 +86,8 @@ class _ScheduleMakerState extends State<ScheduleMaker> {
     return null;
   }
 
-  /// Загрузка и парсинг расписания преподавателя
+
+
   Future<void> _loadScheduleData() async {
     if (!_localeInitialized) return;
 
@@ -117,7 +113,6 @@ class _ScheduleMakerState extends State<ScheduleMaker> {
         throw Exception('Ошибка загрузки: ${response.statusCode}');
       }
 
-      // Парсинг в изоляте
       final scheduleList = await compute(
         parseSchedule,
         ScheduleParseInput(html: response.body, selectedTeacher: selectedTeacher),
@@ -133,14 +128,13 @@ class _ScheduleMakerState extends State<ScheduleMaker> {
       });
     } catch (e) {
       debugPrint('Ошибка парсинга или загрузки: $e');
-      // Попытка загрузить из кеша
       final cached = await _loadScheduleFromPrefs(selectedTeacher!);
       if (cached != null) {
         _cachedSchedules = cached;
         if (!mounted) return;
         setState(() {
           _isLoading = false;
-          _errorMessage = 'Нет соединения. Показано сохранённое расписание.';
+          _errorMessage = 'Нет соединения';
         });
       } else {
         if (!mounted) return;
@@ -152,14 +146,13 @@ class _ScheduleMakerState extends State<ScheduleMaker> {
     }
   }
 
-  /// Фильтрация расписания по дню недели и номеру недели
   List<Map<String, dynamic>> _getFilteredSchedule(DateTime date) {
     if (_cachedSchedules == null) return [];
 
     final dayOfWeek = date.weekday;
     final currentWeek = widget.weekNumber;
 
-    // Соответствие русских сокращений дней недели номерам
+ 
     final dayMap = {
       'пн': 1, 'вт': 2, 'ср': 3, 'сред': 3, 'чт': 4, 'пт': 5, 'сб': 6, 'вс': 7,
     };
@@ -173,98 +166,24 @@ class _ScheduleMakerState extends State<ScheduleMaker> {
     }).toList();
   }
 
-  /// Виджет выбора преподавателя
-  Widget _buildSelectTeacherMessage() {
-    return const Center(
-      child: Text(
-        'Выберите преподавателя в настройках',
-        style: TextStyle(fontSize: 16, color: Colors.blueGrey),
-      ),
-    );
-  }
-
-  /// Виджет загрузки
-  Widget _buildLoading() => const Center(child: CircularProgressIndicator());
-
-  /// Виджет ошибки
-  Widget _buildError(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            _errorMessage ?? '',
-            style: TextStyle(color: Theme.of(context).colorScheme.error),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _loadScheduleData,
-            child: const Text('Обновить расписание'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Виджет отсутствия занятий
-  Widget _buildNoLessons(DateTime date) {
-    final dateStr = DateFormat('dd.MM.yyyy', 'ru_RU').format(date);
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Сегодня у вас нет занятий',
-            style: const TextStyle(fontSize: 16, color: Colors.blueGrey),
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            dateStr,
-            style: const TextStyle(color: Colors.grey),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Основной build
   @override
   Widget build(BuildContext context) {
     final teacherProvider = context.watch<SelectedTeacherProvider>();
     final selectedTeacher = teacherProvider.teacher;
     final selectedDate = widget.selectedDate ?? DateTime.now();
-
-    if (!_isTeacherSelected(selectedTeacher)) {
-      return _buildSelectTeacherMessage();
-    }
-
-    if (_isLoading || !_localeInitialized || teacherProvider.isLoading) {
-      return _buildLoading();
-    }
-
-    if (_errorMessage != null) {
-      return _buildError(context);
-    }
-
     final filteredSchedule = _getFilteredSchedule(selectedDate);
 
-    if (filteredSchedule.isEmpty) {
-      return _buildNoLessons(selectedDate);
-    }
-
-    return RefreshIndicator(
-      onRefresh: _loadScheduleData,
-      child: ListView.separated(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(10),
-        itemCount: filteredSchedule.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 8),
-        itemBuilder: (context, index) {
-          final item = filteredSchedule[index];
-          return ScheduleWidget(item: item);
-        },
-      ),
+    return ScheduleWidget(
+      isTeacherSelected: _isTeacherSelected(selectedTeacher),
+      isLoading: _isLoading,
+      localeInitialized: _localeInitialized,
+      providerIsLoading: teacherProvider.isLoading,
+      errorMessage: _errorMessage,
+      onReload: _loadScheduleData,
+      filteredSchedule: filteredSchedule,
+      selectedTeacher: selectedTeacher,
+      selectedDate: selectedDate,
+      weekNumber: widget.weekNumber,
     );
   }
 }

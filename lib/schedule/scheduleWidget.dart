@@ -1,26 +1,96 @@
 import 'package:flutter/material.dart';
 
+/// ScheduleWidget отображает расписание, ошибки и состояния загрузки.
 class ScheduleWidget extends StatelessWidget {
-  final Map<String, dynamic> item;
+  final bool isTeacherSelected;
+  final bool isLoading;
+  final bool localeInitialized;
+  final bool providerIsLoading;
+  final String? errorMessage;
+  final VoidCallback onReload;
+  final List<Map<String, dynamic>> filteredSchedule;
+  final String? selectedTeacher;
+  final DateTime selectedDate;
+  final int weekNumber;
 
   const ScheduleWidget({
     super.key,
-    required this.item,
+    required this.isTeacherSelected,
+    required this.isLoading,
+    required this.localeInitialized,
+    required this.providerIsLoading,
+    required this.errorMessage,
+    required this.onReload,
+    required this.filteredSchedule,
+    required this.selectedTeacher,
+    required this.selectedDate,
+    required this.weekNumber,
   });
-
-  String get _time => (item['time'] ?? '').toString();
-  String get _timeRange => (item['timeRange'] ?? '').toString();
-  String get _subject => (item['subject'] ?? '').toString();
-  String get _group => (item['group'] ?? '').toString();
-  String get _room => (item['room'] ?? '').toString();
-  String get _type => (item['type'] ?? '').toString();
-
-  bool get _hasGroup => _group.isNotEmpty;
-  bool get _hasRoom => _room.isNotEmpty;
-  bool get _hasType => _type.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
+    if (!localeInitialized) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (providerIsLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (!isTeacherSelected) {
+      return Center(
+        child: Text('Выберите преподавателя', style: Theme.of(context).textTheme.titleMedium),
+      );
+    }
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(errorMessage!, style: TextStyle(color: Colors.red)),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: onReload,
+              child: const Text('Обновить'),
+            ),
+          ],
+        ),
+      );
+    }
+    if (filteredSchedule.isEmpty) {
+      return Center(
+        child: Text('Нет занятий на выбранный день', style: Theme.of(context).textTheme.titleMedium),
+      );
+    }
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: filteredSchedule.length,
+      itemBuilder: (context, index) {
+        final item = filteredSchedule[index];
+        return _ScheduleItemCard(item: item);
+      },
+    );
+  }
+}
+
+class _ScheduleItemCard extends StatelessWidget {
+  final Map<String, dynamic> item;
+  const _ScheduleItemCard({required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    final time = (item['time'] ?? '').toString();
+    final timeRange = (item['timeRange'] ?? '').toString();
+    final subject = (item['subject'] ?? '').toString();
+    final group = (item['group'] ?? '').toString();
+    final room = (item['room'] ?? '').toString();
+    final type = (item['type'] ?? '').toString();
+    final hasGroup = group.isNotEmpty;
+    final hasRoom = room.isNotEmpty;
+    final hasType = type.isNotEmpty;
+    final timeText = timeRange.isNotEmpty ? '$time - $timeRange' : time;
+
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 2,
@@ -32,48 +102,47 @@ class ScheduleWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildTimeRow(),
+            Text(
+              timeText,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
-            _buildSubject(context),
+            Text(
+              subject,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
             const SizedBox(height: 8),
-            if (_hasGroup) _buildInfoRow(Icons.people_outline, 'Группа: $_group'),
-            if (_hasRoom) _buildInfoRow(Icons.room_outlined, 'Аудитория: $_room'),
-            if (_hasType) _buildInfoRow(Icons.info_outline, _type, italic: true, grey: true),
+            if (hasGroup)
+              _InfoRow(icon: Icons.people_outline, text: 'Группа: $group'),
+            if (hasRoom)
+              _InfoRow(icon: Icons.room_outlined, text: 'Аудитория: $room'),
+            if (hasType)
+              _InfoRow(icon: Icons.info_outline, text: type, italic: true, grey: true),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildTimeRow() {
-    final timeText = _timeRange.isNotEmpty ? '$_time - $_timeRange' : _time;
-    return Text(
-      timeText,
-      style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-      ),
-    );
-  }
+class _InfoRow extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final bool italic;
+  final bool grey;
+  const _InfoRow({
+    required this.icon,
+    required this.text,
+    this.italic = false,
+    this.grey = false,
+  });
 
-  /// Название предмета.
-  Widget _buildSubject(BuildContext context) {
-    return Text(
-      _subject,
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-        color: Theme.of(context).primaryColor,
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(
-    IconData icon,
-    String text, {
-    bool italic = false,
-    bool grey = false,
-  }) {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Row(
