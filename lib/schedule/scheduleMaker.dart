@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:campus_plus/schedule/ScheduleWidget.dart';
 import 'package:campus_plus/schedule/scheduleParse.dart';
+import 'package:campus_plus/schedule/widgets/scheduleWidget.dart';
 import 'package:campus_plus/selected_teacher_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

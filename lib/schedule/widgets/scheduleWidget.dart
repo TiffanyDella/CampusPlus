@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// ScheduleWidget отображает расписание, ошибки и состояния загрузки.
 class ScheduleWidget extends StatelessWidget {
   final bool isTeacherSelected;
   final bool isLoading;
@@ -60,7 +59,7 @@ class ScheduleWidget extends StatelessWidget {
     }
     if (filteredSchedule.isEmpty) {
       return Center(
-        child: Text('Нет занятий на выбранный день', style: Theme.of(context).textTheme.titleMedium),
+        child: Text('На сегодня нет занятий', style: Theme.of(context).textTheme.titleMedium),
       );
     }
     return ListView.builder(
@@ -149,12 +148,15 @@ class _InfoRow extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: grey ? Colors.grey[600] : null),
           const SizedBox(width: 8),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 14,
-              fontStyle: italic ? FontStyle.italic : FontStyle.normal,
-              color: grey ? Colors.grey[600] : null,
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 14,
+                fontStyle: italic ? FontStyle.italic : FontStyle.normal,
+                color: grey ? Colors.grey[600] : null,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

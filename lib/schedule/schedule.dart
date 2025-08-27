@@ -3,7 +3,7 @@ import 'package:campus_plus/schedule/week_swiper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-export 'package:campus_plus/schedule/scheduleWidget.dart';
+export 'package:campus_plus/schedule/widgets/scheduleWidget.dart';
 
 /// Главный экран расписания с выбором дня и недели.
 class Schedule extends StatefulWidget {
@@ -58,29 +58,63 @@ class _ScheduleState extends State<Schedule> {
       ),
       body: Column(
         children: [
-          _buildWeekSwiper(),
+          ScheduleWeekSwiper(
+            initialDate: _selectedDateNotifier.value,
+            onDaySelected: (date) => _selectedDateNotifier.value = date,
+            onWeekChanged: (weekNumber) => _weekNumberNotifier.value = weekNumber,
+          ),
           const SizedBox(height: 10),
-          _buildScheduleContent(),
+          ScheduleContentWidget(
+            selectedDateNotifier: _selectedDateNotifier,
+            weekNumberNotifier: _weekNumberNotifier,
+          ),
         ],
       ),
     );
   }
 
-  /// Виджет для выбора дня и недели.
-  Widget _buildWeekSwiper() {
-    return WeekSwiper(
-      onDaySelected: (date) => _selectedDateNotifier.value = date,
-      onWeekChanged: (weekNumber) => _weekNumberNotifier.value = weekNumber,
-      initialDate: _selectedDateNotifier.value,
-    );
   }
 
-  /// Основной контент расписания, реагирующий на изменения даты и недели.
-  Widget _buildScheduleContent() {
+/// Виджет для выбора дня и недели, извлечённый из State.
+class ScheduleWeekSwiper extends StatelessWidget {
+  final DateTime? initialDate;
+  final ValueChanged<DateTime> onDaySelected;
+  final ValueChanged<int> onWeekChanged;
+
+  const ScheduleWeekSwiper({
+    Key? key,
+    required this.initialDate,
+    required this.onDaySelected,
+    required this.onWeekChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return WeekSwiper(
+      onDaySelected: onDaySelected,
+      onWeekChanged: onWeekChanged,
+      initialDate: initialDate,
+    );
+  }
+}
+
+/// Основной контент расписания, реагирующий на изменения даты и недели, извлечённый из State.
+class ScheduleContentWidget extends StatelessWidget {
+  final ValueNotifier<DateTime?> selectedDateNotifier;
+  final ValueNotifier<int> weekNumberNotifier;
+
+  const ScheduleContentWidget({
+    super.key,
+    required this.selectedDateNotifier,
+    required this.weekNumberNotifier,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
       child: ValueListenableBuilder2<DateTime?, int>(
-        valueListenable1: _selectedDateNotifier,
-        valueListenable2: _weekNumberNotifier,
+        valueListenable1: selectedDateNotifier,
+        valueListenable2: weekNumberNotifier,
         builder: (context, selectedDate, weekNumber, child) {
           return ScheduleMaker(
             selectedDate: selectedDate,
@@ -91,6 +125,7 @@ class _ScheduleState extends State<Schedule> {
     );
   }
 }
+
 
 /// Универсальный ValueListenableBuilder для двух слушателей.
 class ValueListenableBuilder2<T1, T2> extends StatelessWidget {

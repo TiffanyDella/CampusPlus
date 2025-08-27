@@ -48,7 +48,6 @@ List<Map<String, dynamic>> parseSchedule(ScheduleParseInput input) {
   return scheduleList;
 }
 
-/// Обрабатывает строку таблицы и извлекает пары для обеих недель
 void _extractLessonsFromRow({
   required List<html_dom.Element> cells,
   required String currentDay,
@@ -58,7 +57,6 @@ void _extractLessonsFromRow({
   final timeInfo = _parseTimeCell(cells[1]);
   if (timeInfo == null) return;
 
-  // Неделя 1 и 2
   for (var week = 1; week <= 2; week++) {
     final cell = cells[week + 1];
     if (_cellHasTeacher(cell, selectedTeacher)) {
@@ -77,7 +75,7 @@ void _extractLessonsFromRow({
   }
 }
 
-/// Извлекает время и диапазон времени из ячейки
+
 Map<String, String>? _parseTimeCell(html_dom.Element timeCell) {
   final timeElement = timeCell.querySelector('.time');
   String timeText = '';
@@ -95,7 +93,7 @@ Map<String, String>? _parseTimeCell(html_dom.Element timeCell) {
   return {'timeText': timeText, 'timeRange': timeRange};
 }
 
-/// Проверяет, есть ли выбранный преподаватель в ячейке
+
 bool _cellHasTeacher(html_dom.Element cell, String selectedTeacher) {
   final teacherDiv = cell.querySelector('.Teacher');
   if (teacherDiv != null) {
@@ -107,7 +105,7 @@ bool _cellHasTeacher(html_dom.Element cell, String selectedTeacher) {
       }
     }
   }
-  // Альтернативная проверка по тексту
+ 
   final cellText = cell.text.replaceAll(RegExp(r'\s+'), ' ').toLowerCase();
   return cellText.contains(selectedTeacher.toLowerCase());
 }
@@ -129,7 +127,6 @@ Map<String, dynamic>? _parseLessonCell({
   final typeElement = mainInfo.querySelector('.small');
   final type = typeElement?.text.trim() ?? '';
 
-  // Очищаем предмет от лишних данных
   String subject = mainInfo.text.trim();
   for (final group in groupElements) {
     subject = subject.replaceAll(group.text.trim(), '');

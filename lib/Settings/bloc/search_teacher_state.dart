@@ -12,12 +12,17 @@ class SearchLoading extends SearchState{
   List<Object?> get props => [];
 }
 
-class SearchLoaded extends SearchState{
-   @override
-  List<Object?> get props => [];
+class SearchLoaded extends SearchState {
+  final List<String> filteredTeachers;
+  SearchLoaded(this.filteredTeachers);
+
+  @override
+  List<Object?> get props => [filteredTeachers];
 }
 
 class SearchError extends SearchState{
-   @override
-  List<Object?> get props => [];
+   final String message;
+  SearchError(this.message);
+  @override
+  List<Object?> get props => [message];
 }

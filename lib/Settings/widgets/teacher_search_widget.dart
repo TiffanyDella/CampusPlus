@@ -1,14 +1,24 @@
+import 'settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc/search_teacher_bloc.dart';
-import 'bloc/search_teacher_event.dart';
-import 'bloc/search_teacher_state.dart';
-import 'package:campus_plus/Settings/widgets/settings_view.dart';
+import '../bloc/search_teacher_bloc.dart';
+import '../bloc/search_teacher_event.dart';
+import '../bloc/search_teacher_state.dart';
 
+class TeacherSearchWidget extends StatelessWidget {
+  const TeacherSearchWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<SearchBloc>(
+      create: (_) => SearchBloc()..add(LoadSearchTeacher()),
+      child: const _TeacherSearchWidgetInner(),
+    );
+  }
+}
 
 class _TeacherSearchWidgetInner extends StatefulWidget {
   const _TeacherSearchWidgetInner();
-
   @override
   State<_TeacherSearchWidgetInner> createState() => _TeacherSearchWidgetInnerState();
 }
@@ -22,22 +32,18 @@ class _TeacherSearchWidgetInnerState extends State<_TeacherSearchWidgetInner> {
       _searchQuery = query;
     });
   }
-
   void _onTeacherSelected(String teacher) {
     setState(() => _selectedTeacher = teacher);
     Navigator.pop(context, teacher);
   }
-
   void _clearSearch() {
     setState(() {
       _searchQuery = '';
     });
   }
-
   void _retryLoading() {
     context.read<SearchBloc>().add(LoadSearchTeacher());
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,4 +112,3 @@ class _TeacherSearchWidgetInnerState extends State<_TeacherSearchWidgetInner> {
     );
   }
 }
-
