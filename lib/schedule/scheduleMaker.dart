@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:schedule_wizard/Settings/widgets/settingsScreen/Settings.dart';
 import '../selected_teacher_provider.dart';
 import 'schedule_provider.dart';
 import 'widgets/scheduleWidget.dart';
@@ -35,15 +36,32 @@ class ScheduleMaker extends StatelessWidget {
     final selectedDate = this.selectedDate ?? DateTime.now();
     final scheduleProv = context.watch<ScheduleProvider>();
 
+    // Если преподаватель не выбран, показываем сообщение и кнопку перехода в настройки
+    if (selectedTeacher == null || selectedTeacher.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Выберите преподавателя в настройках',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15),
+            ),
+            const SizedBox(height: 24),
+          ],
+        ),
+      );
+    }
+
     // Автоматическая загрузка кэша при запуске
     if (selectedTeacher != null && selectedTeacher.isNotEmpty && scheduleProv.schedule == null && !scheduleProv.loading) {
       Future.microtask(() => scheduleProv.loadCache(selectedTeacher));
     }
 
-      // Если расписание ещё не загружено, показываем индикатор или текст внутри рамки
-      if (scheduleProv.schedule == null) {
-    return Center(child: CircularProgressIndicator());
-      }
+    // Если расписание ещё не загружено, показываем индикатор или текст внутри рамки
+    if (scheduleProv.schedule == null) {
+      return Center(child: CircularProgressIndicator());
+    }
 
     // Если кэш есть/загружено - всегда показываем расписание
     final allSchedule = scheduleProv.schedule!;
