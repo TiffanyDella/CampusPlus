@@ -1,5 +1,6 @@
-import 'package:campus_plus/schedule/week.dart';
 import 'package:flutter/material.dart';
+
+import 'week.dart';
 
 class WeekSwiper extends StatefulWidget {
   final ValueChanged<DateTime> onDaySelected;

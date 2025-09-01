@@ -51,7 +51,7 @@ class SelectButton extends StatelessWidget {
       );
 
       if (result != null && result.isNotEmpty) {
-        await context.read<SelectedTeacherProvider>().setTeacher(result);
+  await context.read<SelectedTeacherProvider>().setTeacher(result, context);
 
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(

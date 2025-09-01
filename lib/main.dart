@@ -1,18 +1,36 @@
-import 'package:campus_plus/selected_teacher_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
-import 'package:campus_plus/campus_plus.dart';
+import 'package:schedule_wizard/ScheduleWizard.dart';
+
+import 'firebase_options.dart';
+import 'schedule/schedule_provider.dart';
+import 'selected_teacher_provider.dart';
 
 
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ru_RU', null);
+  WidgetsFlutterBinding.ensureInitialized();
+Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
+
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => SelectedTeacherProvider(),
-      child: const CampusPlus(),
+    
+    MultiProvider(
+      providers: [
+      
+        ChangeNotifierProvider(create: (_) => ScheduleProvider(),),
+        ChangeNotifierProvider(create: (_) => SelectedTeacherProvider()),
+        
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: ScheduleWizard(),
+      ),
     ),
   );
 }

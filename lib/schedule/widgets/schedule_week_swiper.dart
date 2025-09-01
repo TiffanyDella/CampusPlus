@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:campus_plus/schedule/week_swiper.dart';
+
+import '../week_swiper.dart';
 
 class ScheduleWeekSwiper extends StatelessWidget {
   final DateTime? initialDate;

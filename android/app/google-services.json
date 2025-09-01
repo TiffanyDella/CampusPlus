@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "150462497567",
+    "project_id": "schedulewizard-94b9c",
+    "storage_bucket": "schedulewizard-94b9c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150462497567:android:9eaa9891938ab06b6f662a",
+        "android_client_info": {
+          "package_name": "com.example.campus_plus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXlTzUURCzGlE0IQgMOKz_tX9o9BYcZpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

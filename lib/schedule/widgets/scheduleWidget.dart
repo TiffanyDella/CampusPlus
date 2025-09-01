@@ -28,26 +28,18 @@ class ScheduleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!localeInitialized) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    if (providerIsLoading) {
+    if (!localeInitialized || providerIsLoading || isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
     if (!isTeacherSelected) {
-      return Center(
-        child: Text('Выберите преподавателя', style: Theme.of(context).textTheme.titleMedium),
-      );
-    }
-    if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(child: Text('Выберите преподавателя', style: Theme.of(context).textTheme.titleMedium));
     }
     if (errorMessage != null) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(errorMessage!, style: TextStyle(color: Colors.red)),
+            Text(errorMessage!, style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: onReload,
@@ -62,20 +54,20 @@ class ScheduleWidget extends StatelessWidget {
         child: Text('На сегодня нет занятий', style: Theme.of(context).textTheme.titleMedium),
       );
     }
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: filteredSchedule.length,
-      itemBuilder: (context, index) {
-        final item = filteredSchedule[index];
-        return _ScheduleItemCard(item: item);
-      },
+    // success: возвратим массив карточек, чтобы parent ListView мог их использовать
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        for (final item in filteredSchedule)
+          ScheduleItemCard(item: item)
+      ],
     );
   }
 }
 
-class _ScheduleItemCard extends StatelessWidget {
+class ScheduleItemCard extends StatelessWidget {
   final Map<String, dynamic> item;
-  const _ScheduleItemCard({required this.item});
+  const ScheduleItemCard({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +83,7 @@ class _ScheduleItemCard extends StatelessWidget {
     final timeText = timeRange.isNotEmpty ? '$time - $timeRange' : time;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),

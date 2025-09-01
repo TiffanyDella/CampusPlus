@@ -51,7 +51,19 @@ class SelectButton extends StatelessWidget {
       );
 
       if (result != null && result.isNotEmpty) {
-        await context.read<SelectedTeacherProvider>().setTeacher(result);
+        // Показать индикатор загрузки
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+
+        await context.read<SelectedTeacherProvider>().setTeacher(result, context);
+
+        // Скрыть индикатор загрузки
+        if (context.mounted) Navigator.of(context, rootNavigator: true).pop();
 
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -67,6 +79,7 @@ class SelectButton extends StatelessWidget {
       }
     } catch (_) {
       if (context.mounted) {
+        Navigator.of(context, rootNavigator: true).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Ошибка при выборе преподавателя'),

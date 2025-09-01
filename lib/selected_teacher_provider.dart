@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../schedule/schedule_provider.dart';
 
 class SelectedTeacherProvider extends ChangeNotifier {
   String? _teacher;
@@ -31,7 +33,7 @@ class SelectedTeacherProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setTeacher(String teacher) async {
+  Future<void> setTeacher(String teacher, BuildContext context) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -44,6 +46,19 @@ class SelectedTeacherProvider extends ChangeNotifier {
     }
     _isLoading = false;
     notifyListeners();
+
+    // Запрос расписания и перезапись в кэш
+    try {
+      await Provider.of<ScheduleProvider>(context, listen: false).reloadFromServer(teacher);
+    } catch (e) {
+      // Ошибка загрузки расписания
+    }
+
+    // Загрузка расписания через ScheduleProvider
+    // Требуется BuildContext для доступа к Provider
+    // Вызовите этот метод из виджета, передав context
+    // Пример:
+    // await Provider.of<ScheduleProvider>(context, listen: false).reloadFromServer(teacher);
   }
 
   Future<void> clearTeacher() async {

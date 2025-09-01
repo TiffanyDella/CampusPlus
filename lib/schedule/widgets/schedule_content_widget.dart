@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:campus_plus/schedule/scheduleMaker.dart';
-import 'package:campus_plus/schedule/widgets/value_listenable_builder2.dart';
+
+import '../schedule.dart';
+import '../scheduleMaker.dart';
+
 
 class ScheduleContentWidget extends StatelessWidget {
   final ValueNotifier<DateTime?> selectedDateNotifier;

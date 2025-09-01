@@ -1,9 +1,11 @@
-import 'package:campus_plus/schedule/scheduleMaker.dart';
-import 'package:campus_plus/schedule/week_swiper.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-export 'package:campus_plus/schedule/widgets/scheduleWidget.dart';
+import 'scheduleMaker.dart';
+import 'week_swiper.dart';
+
+
 
 /// Главный экран расписания с выбором дня и недели.
 class Schedule extends StatefulWidget {

@@ -1,5 +1,6 @@
-import 'package:campus_plus/schedule/scheduleMaker.dart';
 import 'package:flutter/material.dart';
+
+import '../schedule/scheduleMaker.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -60,8 +61,8 @@ class _ScheduleContainer extends StatelessWidget {
 
     return Container(
       constraints: BoxConstraints(maxHeight: maxHeight),
-      decoration: BoxDecoration(
-        color: Colors.grey,
+        decoration: BoxDecoration(
+          color: Colors.grey,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(

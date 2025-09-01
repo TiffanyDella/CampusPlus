@@ -1,18 +1,21 @@
-import 'package:campus_plus/themes.dart';
+
+
 import 'package:flutter/material.dart';
 import 'Settings/widgets/settingsScreen/Settings.dart';
-import 'home/home.dart';
+
+import 'home/homeWidget.dart';
 import 'schedule/schedule.dart';
+import 'themes.dart';
 
 
 
-class CampusPlus extends StatefulWidget {
-  const CampusPlus({super.key});
+class ScheduleWizard extends StatefulWidget {
+  const ScheduleWizard({super.key});
   @override
-  State<CampusPlus> createState() => _CampusPlusState();
+  State<ScheduleWizard> createState() => _ScheduleWizardState();
 }
 
-class _CampusPlusState extends State<CampusPlus> {
+class _ScheduleWizardState extends State<ScheduleWizard> {
   int _selectedPageIndex = 0;
   final PageController _pageController = PageController();
 

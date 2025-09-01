@@ -20,8 +20,7 @@ class OtherSettingsSection extends StatelessWidget {
         SettingItem(
           icon: Icons.color_lens,
           title: "Тема приложения",
-          onTap: () {
-          },
+          onTap: () {},
         ),
       ],
     );

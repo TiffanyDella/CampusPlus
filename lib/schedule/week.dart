@@ -1,5 +1,6 @@
-import 'package:campus_plus/themes.dart';
 import 'package:flutter/material.dart';
+
+import '../themes.dart';
 
 class Week extends StatelessWidget {
   final List<WeekDay> days;

@@ -1,4 +1,7 @@
 import 'settings_view.dart';
+import 'package:provider/provider.dart';
+import '../../selected_teacher_provider.dart';
+import '../../../schedule/schedule_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/search_teacher_bloc.dart';
@@ -33,8 +36,10 @@ class _TeacherSearchWidgetInnerState extends State<_TeacherSearchWidgetInner> {
     });
   }
   void _onTeacherSelected(String teacher) {
-    setState(() => _selectedTeacher = teacher);
-    Navigator.pop(context, teacher);
+  setState(() => _selectedTeacher = teacher);
+  // Сохраняем выбранного преподавателя и сразу загружаем расписание
+  Provider.of<SelectedTeacherProvider>(context, listen: false).setTeacher(teacher, context);
+  Navigator.pop(context, teacher);
   }
   void _clearSearch() {
     setState(() {
