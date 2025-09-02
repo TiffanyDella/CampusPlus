@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../schedule.dart';
 import '../scheduleMaker.dart';
+import 'value_listenable_builder2.dart';
 
 
 class ScheduleContentWidget extends StatelessWidget {

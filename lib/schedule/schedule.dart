@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'scheduleMaker.dart';
 import 'week_swiper.dart';
+import 'widgets/value_listenable_builder2.dart';
 
 
 
@@ -60,7 +61,7 @@ class _ScheduleState extends State<Schedule> {
       ),
       body: Column(
         children: [
-          ScheduleWeekSwiper(
+          WeekSwiper(
             initialDate: _selectedDateNotifier.value,
             onDaySelected: (date) => _selectedDateNotifier.value = date,
             onWeekChanged: (weekNumber) => _weekNumberNotifier.value = weekNumber,
@@ -78,27 +79,6 @@ class _ScheduleState extends State<Schedule> {
   }
 
 
-class ScheduleWeekSwiper extends StatelessWidget {
-  final DateTime? initialDate;
-  final ValueChanged<DateTime> onDaySelected;
-  final ValueChanged<int> onWeekChanged;
-
-  const ScheduleWeekSwiper({
-    Key? key,
-    required this.initialDate,
-    required this.onDaySelected,
-    required this.onWeekChanged,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return WeekSwiper(
-      onDaySelected: onDaySelected,
-      onWeekChanged: onWeekChanged,
-      initialDate: initialDate,
-    );
-  }
-}
 
 
 class ScheduleContentWidget extends StatelessWidget {
@@ -130,28 +110,3 @@ class ScheduleContentWidget extends StatelessWidget {
 
 
 
-class ValueListenableBuilder2<T1, T2> extends StatelessWidget {
-  final ValueListenable<T1> valueListenable1;
-  final ValueListenable<T2> valueListenable2;
-  final Widget Function(BuildContext, T1, T2, Widget?) builder;
-
-  const ValueListenableBuilder2({
-    super.key,
-    required this.valueListenable1,
-    required this.valueListenable2,
-    required this.builder,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<T1>(
-      valueListenable: valueListenable1,
-      builder: (context, value1, child) {
-        return ValueListenableBuilder<T2>(
-          valueListenable: valueListenable2,
-          builder: (context, value2, child) => builder(context, value1, value2, child),
-        );
-      },
-    );
-  }
-}

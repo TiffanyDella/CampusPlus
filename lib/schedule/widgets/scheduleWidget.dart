@@ -54,7 +54,6 @@ class ScheduleWidget extends StatelessWidget {
         child: Text('На сегодня нет занятий', style: Theme.of(context).textTheme.titleMedium),
       );
     }
-    // success: возвратим массив карточек, чтобы parent ListView мог их использовать
     return ListView(
       padding: EdgeInsets.zero,
       children: [
