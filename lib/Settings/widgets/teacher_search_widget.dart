@@ -37,7 +37,6 @@ class _TeacherSearchWidgetInnerState extends State<_TeacherSearchWidgetInner> {
   }
   void _onTeacherSelected(String teacher) {
   setState(() => _selectedTeacher = teacher);
-  // Сохраняем выбранного преподавателя и сразу загружаем расписание
   Provider.of<SelectedTeacherProvider>(context, listen: false).setTeacher(teacher, context);
   Navigator.pop(context, teacher);
   }

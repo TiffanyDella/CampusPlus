@@ -7,7 +7,7 @@ import 'week_swiper.dart';
 
 
 
-/// Главный экран расписания с выбором дня и недели.
+
 class Schedule extends StatefulWidget {
   const Schedule({super.key});
 
@@ -19,20 +19,20 @@ class _ScheduleState extends State<Schedule> {
   final ValueNotifier<DateTime?> _selectedDateNotifier = ValueNotifier<DateTime?>(DateTime.now());
   final ValueNotifier<int> _weekNumberNotifier = ValueNotifier<int>(_calculateInitialWeekNumber());
 
-  /// Вычисляет номер недели (1 или 2) относительно начала учебного года.
+ 
   static int _calculateWeekNumber(DateTime date) {
     final semesterStart = DateTime(2023, 9, 4);
     final daysPassed = date.difference(semesterStart).inDays;
     return (daysPassed ~/ 7) % 2 + 1;
   }
 
-  /// Вычисляет номер недели для текущей даты.
+  
   static int _calculateInitialWeekNumber() => _calculateWeekNumber(DateTime.now());
 
   @override
   void initState() {
     super.initState();
-    // Обновляем номер недели при изменении выбранной даты
+   
     _selectedDateNotifier.addListener(_updateWeekNumberOnDateChange);
   }
 
@@ -77,7 +77,7 @@ class _ScheduleState extends State<Schedule> {
 
   }
 
-/// Виджет для выбора дня и недели, извлечённый из State.
+
 class ScheduleWeekSwiper extends StatelessWidget {
   final DateTime? initialDate;
   final ValueChanged<DateTime> onDaySelected;
@@ -100,7 +100,7 @@ class ScheduleWeekSwiper extends StatelessWidget {
   }
 }
 
-/// Основной контент расписания, реагирующий на изменения даты и недели, извлечённый из State.
+
 class ScheduleContentWidget extends StatelessWidget {
   final ValueNotifier<DateTime?> selectedDateNotifier;
   final ValueNotifier<int> weekNumberNotifier;
@@ -129,7 +129,7 @@ class ScheduleContentWidget extends StatelessWidget {
 }
 
 
-/// Универсальный ValueListenableBuilder для двух слушателей.
+
 class ValueListenableBuilder2<T1, T2> extends StatelessWidget {
   final ValueListenable<T1> valueListenable1;
   final ValueListenable<T2> valueListenable2;

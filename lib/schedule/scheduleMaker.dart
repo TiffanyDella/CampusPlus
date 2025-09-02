@@ -36,7 +36,6 @@ class ScheduleMaker extends StatelessWidget {
     final selectedDate = this.selectedDate ?? DateTime.now();
     final scheduleProv = context.watch<ScheduleProvider>();
 
-    // Если преподаватель не выбран, показываем сообщение и кнопку перехода в настройки
     if (selectedTeacher == null || selectedTeacher.isEmpty) {
       return Center(
         child: Column(
@@ -53,17 +52,17 @@ class ScheduleMaker extends StatelessWidget {
       );
     }
 
-    // Автоматическая загрузка кэша при запуске
+
     if (selectedTeacher != null && selectedTeacher.isNotEmpty && scheduleProv.schedule == null && !scheduleProv.loading) {
       Future.microtask(() => scheduleProv.loadCache(selectedTeacher));
     }
 
-    // Если расписание ещё не загружено, показываем индикатор или текст внутри рамки
+
     if (scheduleProv.schedule == null) {
       return Center(child: CircularProgressIndicator());
     }
 
-    // Если кэш есть/загружено - всегда показываем расписание
+   
     final allSchedule = scheduleProv.schedule!;
     final filtered = _getFilteredSchedule(allSchedule, selectedDate, weekNumber);
     if (filtered.isEmpty) {
@@ -77,7 +76,7 @@ class ScheduleMaker extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () async {
         if (selectedTeacher != null && selectedTeacher.isNotEmpty) {
-          // Запускаем загрузку расписания без ожидания, чтобы индикатор RefreshIndicator исчезал сразу
+
           scheduleProv.reloadFromServer(selectedTeacher);
         }
       },

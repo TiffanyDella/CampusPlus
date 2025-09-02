@@ -62,7 +62,6 @@ class SelectButton extends StatelessWidget {
 
         await context.read<SelectedTeacherProvider>().setTeacher(result, context);
 
-        // Скрыть индикатор загрузки
         if (context.mounted) Navigator.of(context, rootNavigator: true).pop();
 
         if (context.mounted) {

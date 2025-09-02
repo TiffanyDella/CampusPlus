@@ -67,7 +67,6 @@ class ScheduleProvider extends ChangeNotifier {
       _error = null;
       notifyListeners();
     } catch (e) {
-      // если кэш есть, просто "молчим" о сетевой ошибке и позволяем UI показать кэш, иначе выводим ошибку
       final localCache = prefs.getString('schedule_cache_$teacher');
       if (localCache != null) {
         _loading = false;

@@ -47,18 +47,14 @@ class SelectedTeacherProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
 
-    // Запрос расписания и перезапись в кэш
+  
     try {
       await Provider.of<ScheduleProvider>(context, listen: false).reloadFromServer(teacher);
     } catch (e) {
-      // Ошибка загрузки расписания
+     
     }
 
-    // Загрузка расписания через ScheduleProvider
-    // Требуется BuildContext для доступа к Provider
-    // Вызовите этот метод из виджета, передав context
-    // Пример:
-    // await Provider.of<ScheduleProvider>(context, listen: false).reloadFromServer(teacher);
+
   }
 
   Future<void> clearTeacher() async {
