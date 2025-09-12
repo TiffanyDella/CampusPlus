@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:schedule_wizard/Settings/widgets/settingsScreen/Settings.dart';
-import '../selected_teacher_provider.dart';
+import '../view/Schedule/scheduleWidget.dart';
 import 'schedule_provider.dart';
-import 'widgets/scheduleWidget.dart';
+import 'selected_teacher_provider.dart';
 
 class ScheduleMaker extends StatelessWidget {
   final DateTime? selectedDate;

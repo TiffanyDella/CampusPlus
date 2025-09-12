@@ -1,11 +1,10 @@
 
 
 import 'package:flutter/material.dart';
-import 'Settings/widgets/settingsScreen/Settings.dart';
-
-import 'home/homeWidget.dart';
-import 'schedule/schedule.dart';
-import 'themes.dart';
+import 'Home/homeWidget.dart';
+import '../themes.dart';
+import 'Schedule/schedule.dart';
+import 'Settings/Settings.dart';
 
 
 

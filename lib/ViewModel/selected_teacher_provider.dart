@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-import '../schedule/schedule_provider.dart';
+import 'schedule_provider.dart';
 
 class SelectedTeacherProvider extends ChangeNotifier {
   String? _teacher;

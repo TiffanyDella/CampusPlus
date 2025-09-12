@@ -2,9 +2,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'scheduleMaker.dart';
-import 'week_swiper.dart';
-import 'widgets/value_listenable_builder2.dart';
+import '../../ViewModel/scheduleMaker.dart';
+import 'schedule_content_widget.dart';
+import 'week.dart';
+import 'value_listenable_builder2.dart';
 
 
 
@@ -81,32 +82,7 @@ class _ScheduleState extends State<Schedule> {
 
 
 
-class ScheduleContentWidget extends StatelessWidget {
-  final ValueNotifier<DateTime?> selectedDateNotifier;
-  final ValueNotifier<int> weekNumberNotifier;
 
-  const ScheduleContentWidget({
-    super.key,
-    required this.selectedDateNotifier,
-    required this.weekNumberNotifier,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ValueListenableBuilder2<DateTime?, int>(
-        valueListenable1: selectedDateNotifier,
-        valueListenable2: weekNumberNotifier,
-        builder: (context, selectedDate, weekNumber, child) {
-          return ScheduleMaker(
-            selectedDate: selectedDate,
-            weekNumber: weekNumber,
-          );
-        },
-      ),
-    );
-  }
-}
 
 
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../schedule/scheduleMaker.dart';
+import '../../ViewModel/scheduleMaker.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -14,7 +14,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final currentDate = DateTime.now();
     final currentWeekNumber = _calculateWeekNumber(currentDate);
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../selected_teacher_provider.dart';
 import 'package:provider/provider.dart';
-import 'teacher_search_widget.dart';
+import '../../../ViewModel/selected_teacher_provider.dart';
+import '../teacher_search_widget.dart';
 
 class SelectButton extends StatelessWidget {
   final SelectedTeacherProvider provider;

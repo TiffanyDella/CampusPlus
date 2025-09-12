@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../selected_teacher_provider.dart';
+import '../../../ViewModel/selected_teacher_provider.dart';
 import 'section_title.dart';
 import 'selected_teacher_card.dart';
 import 'select_button.dart';

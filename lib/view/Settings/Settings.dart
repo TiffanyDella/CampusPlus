@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-
-import 'seccondWidgets/other_settings_section.dart';
-import 'seccondWidgets/teacher_selection_section.dart';
+import 'secondWidgets/teacher_selection_section.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -22,7 +20,6 @@ class Settings extends StatelessWidget {
             const SizedBox(height: 20),
             const TeacherSelectionSection(),
             const SizedBox(height: 24),
-            OtherSettingsSection(),
           ],
         ),
       ),

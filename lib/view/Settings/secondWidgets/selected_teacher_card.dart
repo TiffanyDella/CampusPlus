@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../selected_teacher_provider.dart';
+import '../../../ViewModel/selected_teacher_provider.dart';
 
 class SelectedTeacherCard extends StatelessWidget {
   final SelectedTeacherProvider provider;

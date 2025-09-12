@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/search_teacher_bloc.dart';
-import '../../bloc/search_teacher_event.dart';
-import '../../bloc/search_teacher_state.dart';
+
+import '../../ViewModel/bloc/search_teacher_bloc.dart';
+import '../../ViewModel/bloc/search_teacher_event.dart';
+import '../../ViewModel/bloc/search_teacher_state.dart';
 import 'secondWidgets/empty_widget.dart';
 import 'secondWidgets/error_widget_with_retry.dart';
 import 'secondWidgets/loading_widget.dart';
